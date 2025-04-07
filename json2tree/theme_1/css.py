@@ -40,5 +40,20 @@ margin-right: 6px;
 .text-h {
     font-family:'Inconsolata',monospace;
 }
+
+/* Search highlighting styles */
+.highlighted {
+    background-color: #ffeb3b;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+/* Remove different styling for current highlight */
+.current-highlight {
+    background-color: #ffeb3b; /* Same as regular highlights */
+    color: inherit;
+    padding: 0 2px;
+    border-radius: 2px;
+    box-shadow: 0 0 0 2px #ff9800; /* Add an outline instead for current item */
+}
 </style>\n
 '''
