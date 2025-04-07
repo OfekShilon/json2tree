@@ -14,6 +14,15 @@ $(document).ready(function() {
     var searchResults = [];
     var currentResultIndex = -1;
     
+    // Hide None values functionality
+    $("#hideNoneValues").on("change", function() {
+        if($(this).prop("checked")) {
+            $(".none-value").addClass("hidden");
+        } else {
+            $(".none-value").removeClass("hidden");
+        }
+    });
+    
     function performSearch(searchTerm) {
         if (!searchTerm) {
             // Clear all highlights if search is empty

@@ -33,8 +33,11 @@ def list_handler(list_obj, indent, line_num=1):
             html_string = html_string + '  '*indent + '</ul> \n ' + \
                 '  '*indent + '</li>\n '
         else:
+            # Check if value is None and apply special class if so
+            is_none = str(list_obj[i]) == 'None'
+            none_class = ' none-value' if is_none else ''
             html_string = html_string + ' '*indent + \
-                '<li><span class="line-num">' + str(line_num) + '</span>' + \
+                '<li class="' + none_class + '"><span class="line-num">' + str(line_num) + '</span>' + \
                 '<span class="text-c">' + str(list_obj[i]) + \
                 '</span>\n</li> \n '
             line_num += 1
@@ -72,8 +75,11 @@ def dict_handler(dict_obj, indent, line_num=1):
             html_string = html_string + sub_html + \
                 '  '*indent + '</ul> \n ' + '  '*indent + '</li> \n '
         else:
+            # Check if value is None and apply special class if so
+            is_none = str(v) == 'None'
+            none_class = ' none-value' if is_none else ''
             html_string = html_string + ' '*indent + \
-                '<li><span class="line-num">' + str(line_num) + '</span>' + \
+                '<li class="' + none_class + '"><span class="line-num">' + str(line_num) + '</span>' + \
                 '<span class="text-h">' + str(k) + ' : ' + \
                 '</span><span class="text-c">' + str(v) + '</span></li>\n'
             line_num += 1
@@ -126,12 +132,10 @@ line_number_css = '''
     border-right: 1px solid #ddd;
     user-select: none;
 }
+
+/* Style for None values that can be hidden */
+.none-value.hidden {
+    display: none;
+}
 </style>
 '''
-
-def generate(self, image_obj_list):
-    '''Given a list of image objects, create a html report
-    for the images'''
-    report_dict = get_report_dict(image_obj_list)
-    report = create_html_report(report_dict)
-    return report

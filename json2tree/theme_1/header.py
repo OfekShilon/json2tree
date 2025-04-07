@@ -27,7 +27,7 @@ rel="stylesheet">
         <div class="d-flex">
             <div class="input-group">
                 <input type="text" id="searchInput" class="form-control" placeholder="Search...">
-                <button class="btn btn+-outline-secondary" type="button" id="searchPrev">
+                <button class="btn btn-outline-secondary" type="button" id="searchPrev">
                     <span>↑</span>
                 </button>
                 <button class="btn btn-outline-secondary" type="button" id="searchNext">
@@ -38,6 +38,12 @@ rel="stylesheet">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="caseSensitive">
                         <label class="form-check-label" for="caseSensitive">Case sensitive</label>
+                    </div>
+                </div>
+                <div class="input-group-text">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="hideNoneValues">
+                        <label class="form-check-label" for="hideNoneValues">Hide None values</label>
                     </div>
                 </div>
             </div>
