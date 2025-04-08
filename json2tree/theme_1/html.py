@@ -9,10 +9,15 @@ def list_handler(list_obj, indent, line_num=1):
     for i, _ in enumerate(list_obj):
         if isinstance(list_obj[i], dict):
             if "name" in list_obj[i].keys():
+                # Extract the name value
+                name_value = str(list_obj[i]["name"])
+                
+                # Create display text that includes both index and name value
+                display_text = str(i) + " : " + name_value
+                
                 html_string = html_string + '  '*indent + \
                     '<li><span class="line-num">' + str(line_num) + '</span>' + \
-                    '<span class="caret">' + str(list_obj[i]["name"]) + \
-                    ' :         ' + '</span> \n '
+                    '<span class="caret">' + display_text + '</span> \n '
             else:
                 html_string = html_string + '  '*indent + \
                     '<li><span class="line-num">' + str(line_num) + '</span>' + \
@@ -54,11 +59,18 @@ def dict_handler(dict_obj, indent, line_num=1):
     html_string = html_string + '  '*indent + '<ul class ="nested"> \n'
     for k, v in dict_obj.items():
         if isinstance(v, dict):
+            # Check for the specific case where a dict has a "name" property
+            # but we want to show the parent field name as well
             if "name" in v.keys():
+                # Extract the name value
+                name_value = str(v["name"])
+                
+                # Create display text that includes both parent key and name value
+                display_text = str(k) + " : " + name_value
+                
                 html_string = html_string + '  '*indent + \
                     '<li><span class="line-num">' + str(line_num) + '</span>' + \
-                    '<span class="caret">' + str(v["name"]) + ' : ' + \
-                    '</span> \n '
+                    '<span class="caret">' + display_text + '</span> \n '
             else:
                 html_string = html_string + '  '*indent + \
                     '<li><span class="line-num">' + str(line_num) + '</span>' + \
