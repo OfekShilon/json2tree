@@ -24,7 +24,8 @@ head = """
 <nav class="navbar sticky-top navbar-light bg-light shadow-sm">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <span style="font-family: 'Inter', sans-serif; font-weight: 600; color: #334155;">SPD Json Viewer</span>
+            <img src="https://raw.githubusercontent.com/abhaykatheria/json2tree/main/J2T.png" width="80" height="30" class="d-inline-block align-top" alt=""> 
+            <span style="font-family: 'Inter', sans-serif; font-weight: 600; color: #334155;">JSON2tree</span>
         </a>
         <div class="d-flex">
             <div class="input-group">
@@ -38,14 +39,20 @@ head = """
                 <span class="input-group-text" id="searchCount">0/0</span>
                 <div class="input-group-text">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="caseSensitive">
-                        <label class="form-check-label" for="caseSensitive">Case sensitive</label>
+                        <input class="form-check-input" type="checkbox" id="caseSensitive" checked>
+                        <label class="form-check-label" for="caseSensitive">Case sensitive search</label>
                     </div>
                 </div>
                 <div class="input-group-text">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="hideNoneValues">
+                        <input class="form-check-input" type="checkbox" id="hideNoneValues" checked>
                         <label class="form-check-label" for="hideNoneValues">Hide None values</label>
+                    </div>
+                </div>
+                <div class="input-group-text">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="collapseSingleChildren">
+                        <label class="form-check-label" for="collapseSingleChildren">Collapse single children</label>
                     </div>
                 </div>
             </div>

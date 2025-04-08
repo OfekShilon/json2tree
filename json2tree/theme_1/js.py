@@ -14,12 +14,53 @@ $(document).ready(function() {
     var searchResults = [];
     var currentResultIndex = -1;
     
+    // Hide None values on page load since the checkbox is checked by default
+    $(".none-value").addClass("hidden");
+    
     // Hide None values functionality
     $("#hideNoneValues").on("change", function() {
         if($(this).prop("checked")) {
             $(".none-value").addClass("hidden");
         } else {
             $(".none-value").removeClass("hidden");
+        }
+    });
+    
+    // Collapse single children functionality
+    $("#collapseSingleChildren").on("change", function() {
+        if($(this).prop("checked")) {
+            $("body").addClass("collapse-singles");
+            
+            // If some nodes are expanded, make sure the path is visible
+            $(".caret-down").each(function() {
+                var $parent = $(this).parent();
+                if ($parent.hasClass("single-child-parent")) {
+                    // Keep the node and its children visible
+                    $parent.find("> .single-child-container").show();
+                    $parent.find("> .single-child-container > .nested").addClass("active");
+                    $parent.find("> .collapsed-path").hide();
+                }
+            });
+        } else {
+            $("body").removeClass("collapse-singles");
+        }
+    });
+    
+    // Add special handling for caret clicks on single child parents
+    $(document).on("click", ".single-child-parent > .caret", function() {
+        var $parent = $(this).parent();
+        var isCollapsingSingleChildren = $("#collapseSingleChildren").prop("checked");
+        
+        if (isCollapsingSingleChildren) {
+            if ($(this).hasClass("caret-down")) {
+                // Node is being expanded
+                $parent.find("> .single-child-container").show();
+                $parent.find("> .collapsed-path").hide();
+            } else {
+                // Node is being collapsed
+                $parent.find("> .single-child-container").hide();
+                $parent.find("> .collapsed-path").show();
+            }
         }
     });
     
@@ -130,6 +171,12 @@ $(document).ready(function() {
             if ($caret.length && $nested.length && !$nested.hasClass('active')) {
                 $caret.addClass('caret-down');
                 $nested.addClass('active');
+                
+                // Handle single children collapse logic
+                if ($parent.hasClass("single-child-parent") && $("#collapseSingleChildren").prop("checked")) {
+                    $parent.find("> .single-child-container").show();
+                    $parent.find("> .collapsed-path").hide();
+                }
             }
             $parent = $parent.parent().closest('li');
         }
@@ -194,6 +241,46 @@ $(document).ready(function() {
         
         scrollToResult(currentResultIndex);
     });
+    
+    // Mark single child nodes after DOM is fully loaded
+    setTimeout(function() {
+        markSingleChildren();
+    }, 100);
+    
+    function markSingleChildren() {
+        // Find all ul.nested elements that have exactly one child li
+        $("ul.nested").each(function() {
+            var $ul = $(this);
+            var $childLis = $ul.children("li");
+            
+            // If there's exactly one child
+            if ($childLis.length === 1) {
+                var $parentLi = $ul.parent("li");
+                if ($parentLi.length) {
+                    var $parentCaret = $parentLi.children(".caret");
+                    var $childCaret = $childLis.children(".caret");
+                    
+                    if ($parentCaret.length && $childCaret.length) {
+                        // Get the child's text
+                        var childText = $childLis.children(".caret").text().trim();
+                        
+                        // Add classes for styling
+                        $parentLi.addClass("single-child-parent");
+                        $ul.addClass("single-child-container");
+                        
+                        // Add collapsed path element
+                        var $collapsedPath = $('<span class="collapsed-path">' + childText + '</span>');
+                        $parentCaret.after($collapsedPath);
+                        
+                        // If there are more levels, add an indicator
+                        if ($childLis.find(".nested").length) {
+                            $collapsedPath.after('<span class="collapsed-descendants">...</span>');
+                        }
+                    }
+                }
+            }
+        });
+    }
 });
 </script>\n
 '''
