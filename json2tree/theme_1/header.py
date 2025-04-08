@@ -24,8 +24,7 @@ head = """
 <nav class="navbar sticky-top navbar-light bg-light shadow-sm">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img src="https://raw.githubusercontent.com/abhaykatheria/json2tree/main/J2T.png" width="80" height="30" class="d-inline-block align-top" alt=""> 
-            <span style="font-family: 'Inter', sans-serif; font-weight: 600; color: #334155;">JSON2tree</span>
+            <span style="font-family: 'Inter', sans-serif; font-weight: 600; color: #334155;">SPD Json Viewer</span>
         </a>
         <div class="d-flex">
             <div class="input-group">
