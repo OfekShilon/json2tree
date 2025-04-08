@@ -36,9 +36,13 @@ def list_handler(list_obj, indent, line_num=1):
             # Check if value is None and apply special class if so
             is_none = str(list_obj[i]) == 'None'
             none_class = ' none-value' if is_none else ''
+            
+            # Determine value type class for syntax highlighting
+            type_class = get_value_type_class(list_obj[i])
+            
             html_string = html_string + ' '*indent + \
                 '<li class="' + none_class + '"><span class="line-num">' + str(line_num) + '</span>' + \
-                '<span class="text-c">' + str(list_obj[i]) + \
+                '<span class="text-c ' + type_class + '">' + str(list_obj[i]) + \
                 '</span>\n</li> \n '
             line_num += 1
     return html_string, line_num
@@ -78,14 +82,17 @@ def dict_handler(dict_obj, indent, line_num=1):
             # Check if value is None and apply special class if so
             is_none = str(v) == 'None'
             none_class = ' none-value' if is_none else ''
+            
+            # Determine value type class for syntax highlighting
+            type_class = get_value_type_class(v)
+            
             html_string = html_string + ' '*indent + \
                 '<li class="' + none_class + '"><span class="line-num">' + str(line_num) + '</span>' + \
                 '<span class="text-h">' + str(k) + ' : ' + \
-                '</span><span class="text-c">' + str(v) + '</span></li>\n'
+                '</span><span class="text-c ' + type_class + '">' + str(v) + '</span></li>\n'
             line_num += 1
     html_string = html_string + '  '*indent + '</ul> \n '
     return html_string, line_num
-
 
 def report_dict_to_html(dict_obj):
     '''Writes html code for report'''
@@ -108,7 +115,6 @@ def create_html_report(report_dict):
     report = report + '\n' + '</body>\n</html>\n'
     return report
 
-
 def get_report_dict(image_obj_list):
     '''Given an image object list, return a python dict of the report'''
     image_list = []
@@ -117,6 +123,18 @@ def get_report_dict(image_obj_list):
     image_dict = {'images': image_list}
     return image_dict
 
+def get_value_type_class(value):
+    '''Return the appropriate CSS class for a given JSON value based on its type'''
+    if value is None:
+        return 'json-null'
+    elif isinstance(value, bool):
+        return 'json-boolean'
+    elif isinstance(value, (int, float)):
+        return 'json-number'
+    elif isinstance(value, str):
+        return 'json-string'
+    else:
+        return ''
 
 # CSS for line numbers
 line_number_css = '''
@@ -125,12 +143,13 @@ line_number_css = '''
     display: inline-block;
     width: 40px;
     text-align: right;
-    margin-right: 8px;
+    margin-right: 10px;
     padding-right: 4px;
-    color: #999;
-    font-family: monospace;
-    border-right: 1px solid #ddd;
+    color: #94a3b8;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    border-right: 1px solid #e2e8f0;
     user-select: none;
+    font-size: 12px;
 }
 
 /* Style for None values that can be hidden */
