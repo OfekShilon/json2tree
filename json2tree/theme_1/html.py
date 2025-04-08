@@ -97,12 +97,43 @@ def dict_handler(dict_obj, indent, line_num=1):
 def report_dict_to_html(dict_obj):
     '''Writes html code for report'''
     html_string = ''
-    html_string = html_string + '<ul class ="myUL"> \n'
-    html_string = html_string + \
-        '<li><span class="line-num">1</span><span class="caret">REPORT</span> \n'
-    dict_html, _ = dict_handler(dict_obj, 0, 2)
-    html_string = html_string + dict_html
-    html_string = html_string + '</li></ul> \n'
+    
+    # Check if there's only a single root element
+    if len(dict_obj) == 1:
+        html_string = html_string + '<ul class="myUL"> \n'
+        
+        # Get the single root element's key and value
+        root_key = list(dict_obj.keys())[0]
+        root_value = dict_obj[root_key]
+        
+        # Create the single root node
+        html_string = html_string + \
+            f'<li><span class="line-num">1</span><span class="caret">{root_key}</span> \n'
+        
+        # Process the single root's content
+        if isinstance(root_value, dict):
+            dict_html, line_num = dict_handler(root_value, 0, 2)
+            html_string = html_string + dict_html
+        elif isinstance(root_value, list):
+            html_string = html_string + '  <ul class="nested"> \n'
+            list_html, _ = list_handler(root_value, 1, 2)
+            html_string = html_string + list_html
+            html_string = html_string + '  </ul> \n'
+        else:
+            # If the single root has a simple value, display it
+            type_class = get_value_type_class(root_value)
+            html_string = html_string + f'<span class="text-c {type_class}"> : {root_value}</span>\n'
+        
+        html_string = html_string + '</li></ul> \n'
+    else:
+        # Multiple root elements, use the REPORT wrapper
+        html_string = html_string + '<ul class ="myUL"> \n'
+        html_string = html_string + \
+            '<li><span class="line-num">1</span><span class="caret">REPORT</span> \n'
+        dict_html, _ = dict_handler(dict_obj, 0, 2)
+        html_string = html_string + dict_html
+        html_string = html_string + '</li></ul> \n'
+    
     return html_string
 
 def create_html_report(report_dict):
